@@ -984,6 +984,7 @@ jobs:
 
     - name: Run script inside Alpine chroot
       if: runner.os == "Linux"      
+      run: |  
         mkdir obj && cd obj
         cmake -DClang_DIR="$PATH_TO_LLVM_BUILD" \
           -DLLVM_DIR="$PATH_TO_LLVM_BUILD"  \
