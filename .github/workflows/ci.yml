@@ -919,7 +919,7 @@ jobs:
         shell-name: alpine-aarch64.sh
 
     - name: Run script inside Alpine chrootactions
-      if: runner.os == "Linux"
+      if: ${{ runner.os != 'Linux' }}
       run: |
         if ! sudo apt install -y llvm-${{ matrix.clang-runtime }}-dev ; then
           curl https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
@@ -978,7 +978,7 @@ jobs:
       shell: alpine-x86_64.sh {0}
 
     - name: Run script inside Alpine chroot
-      if: runner.os == "Linux"      
+      if: ${{ runner.os != 'Linux' }}      
       run: |  
         mkdir obj && cd obj
         cmake -DClang_DIR="$PATH_TO_LLVM_BUILD" \
