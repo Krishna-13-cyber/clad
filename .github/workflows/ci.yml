@@ -975,11 +975,6 @@ jobs:
               ../llvm
         cmake --build . --target clang FileCheck llvm-config --parallel ${CPU_COUNT}
         cd ../../
-
-      with:
-          path: |
-            llvm-project
-          key: ${{ steps.cache.outputs.cache-primary-key }}
       shell: alpine-x86_64.sh {0}
 
     - name: Run script inside Alpine chroot
