@@ -905,6 +905,7 @@ jobs:
       #  TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
 
     - name: Setup latest Alpine Linux for x86_64
+      if: ${{ runner.os == 'Linux' }}
       uses: jirutka/setup-alpine@v1
       env:
         compiler: ${{ matrix.compiler }}
@@ -913,13 +914,14 @@ jobs:
         shell-name: alpine-x86_64.sh
 
     - name: Setup latest Alpine Linux for aarch64
+      if: ${{ runner.os == 'Linux' }}
       uses: jirutka/setup-alpine@v1
       with:
         arch: aarch64
         shell-name: alpine-aarch64.sh
 
     - name: Run script inside Alpine chrootactions
-      if: ${{ runner.os != 'Linux' }}
+      if: ${{ runner.os == 'Linux' }}
       run: |
         if ! sudo apt install -y llvm-${{ matrix.clang-runtime }}-dev ; then
           curl https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
