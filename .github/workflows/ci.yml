@@ -2,12 +2,12 @@ name: Main
 on:
   push:
     branches:
-      - master
+      - plat-test
       - tape-push
       - coverity_scan
   pull_request:
     branches:
-      - master
+      - plat-test
       - tape-push
       - coverity_scan
 
@@ -996,48 +996,3 @@ jobs:
 
         cmake --build . --target check-clad -- -j4
       shell: alpine-x86_64.sh {0}
-  #   - name: Run script inside Alpine chroot with aarch64 emulation
-  #     if: runner.os == "Linux"
-  #     run: |
-  # #       if ! sudo apt install -y llvm-${{ matrix.clang-runtime }}-dev ; then
-  # #         curl https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-  # #         os_codename="`cat /etc/os-release | grep UBUNTU_CODENAME | cut -d = -f 2`"
-  # #         echo "deb https://apt.llvm.org/${os_codename}/ llvm-toolchain-${os_codename}-${{ matrix.clang-runtime }} main" | sudo tee -a /etc/apt/sources.list
-  # #         sudo apt update
-  # #       fi
-  # #       sudo apt install llvm-${{ matrix.clang-runtime }}-dev \
-  # #                         llvm-${{ matrix.clang-runtime }}-tools \
-  # #                         clang-${{ matrix.clang-runtime }} \
-  # #                         libclang-${{ matrix.clang-runtime }}-dev \
-  # #                         ${{ matrix.extra_packages }}
-  # #       # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
-  # #       vers="${compiler#*-}"
-  # #       os_codename="`cat /etc/os-release | grep UBUNTU_CODENAME | cut -d = -f 2`"
-  # #       sudo apt update
-  # #       if [[ "${{ matrix.compiler }}" == *"gcc"* ]]; then
-  # #         sudo apt    shell: alpine-x86_64.sh {0}
-  # #  install -y gcc-${vers} g++-${vers}
-  # #         echo "CC=gcc-${vers}" >> $GITHUB_ENV
-  # #         echo "CXX=g++-${vers}" >> $GITHUB_ENV
-  # #       else
-  # #         if ! sudo apt install -y clang-${vers}; then
-  # #           curl https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-  # #           echo "deb https://apt.llvm.org/${os_codename}/ llvm-toolchain-${os_codename}-${vers} main" | sudo tee -a /etc/apt/sources.list
-  # #           sudo apt update
-  # #           sudo apt install -y clang-${vers}
-  # #         fi
-  # #         echo "CC=clang-${vers}" >> $GITHUB_ENV
-  # #         echo "CXX=clang++-${vers}" >> $GITHUB_ENV
-  # #       fi
-
-  #       mkdir obj && cd obj
-  #       cmake -DClang_DIR="$PATH_TO_LLVM_BUILD" \
-  #         -DLLVM_DIR="$PATH_TO_LLVM_BUILD"  \
-  #         -DCMAKE_BUILD_TYPE=$([[ -z "$BUILD_TYPE" ]] && echo RelWithDebInfo || echo $BUILD_TYPE) \
-  #         -DCLAD_CODE_COVERAGE=${CLAD_CODE_COVERAGE}  \
-  #         -DLLVM_EXTERNAL_LIT="`which lit`" \
-  #         $GITHUB_WORKSPACE                 \
-  #         ${{ matrix.extra_cmake_options }}
-
-  #       cmake --build . --target check-clad -- -j4
-  #     shell: alpine-aarch64.sh {0}
