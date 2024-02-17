@@ -938,8 +938,6 @@ jobs:
     - name: Setup latest Alpine Linux for x86_64
       if: ${{ runner.os == 'Linux' }}
       run: |
-        git clone https://github.com/vgvassilev/clad.git
-        cd clad
         mkdir build && cd build
         cmake -DLLVM_DIR="$PATH_TO_LLVM_BUILD" -DCMAKE_BUILD_TYPE=DEBUG ../
         make -j8 clad
