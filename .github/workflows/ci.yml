@@ -929,6 +929,12 @@ jobs:
         arch: aarch64
         shell-name: alpine-aarch64.sh
 
+   - name: "Setup"
+    run: |
+      clang --version
+      make --version
+    shell: alpine-x86_64.sh {0}
+  
     - name: Setup latest Alpine Linux for x86_64
       if: ${{ runner.os == 'Linux' }}
       run: |
