@@ -929,58 +929,70 @@ jobs:
         arch: aarch64
         shell-name: alpine-aarch64.sh
 
-    - name: Run script inside Alpine chrootactions
+    # - name: Run script inside Alpine chrootactions
+    #   if: ${{ runner.os == 'Linux' }}
+    #   run: |
+    #     # sudo apt-get update \
+    #     # && apt-get -y install build-essential \
+    #     # && apt-get install -y wget \
+    #     # && rm -rf /var/lib/apt/lists/* \
+    #     # && wget https://github.com/Kitware/CMake/releases/download/v3.24.1/cmake-3.24.1-Linux-x86_64.sh \
+    #     # -q -O /tmp/cmake-install.sh \
+    #     # && chmod u+x /tmp/cmake-install.sh \
+    #     # && mkdir /opt/cmake-3.24.1 \
+    #     # && /tmp/cmake-install.sh --skip-license --prefix=/opt/cmake-3.24.1 \
+    #     # && rm /tmp/cmake-install.sh \
+    #     # && ln -s /opt/cmake-3.24.1/bin/* /usr/local/bin
+    #     # apt-get update && apt install -y curl git && apt clean
+    #     os="${{ matrix.os }}"
+    #     git clone --depth=1 -b release/${{ matrix.clang-runtime }}.x https://github.com/llvm/llvm-project.git
+    #     cd llvm-project
+    #     # Build
+    #     mkdir build
+    #     cd build
+    #     export CPU_COUNT="$(nproc --all)"
+    #     cmake \
+    #           -DLLVM_ENABLE_PROJECTS="clang"        \
+    #           -DLLVM_TARGETS_TO_BUILD="host;NVPTX"  \
+    #           -DCMAKE_BUILD_TYPE=`[[ -z "$BUILD_TYPE" ]] && echo RelWithDebInfo || echo $BUILD_TYPE` \
+    #           -DLLVM_ENABLE_ASSERTIONS=ON           \
+    #           -DCLANG_ENABLE_STATIC_ANALYZER=OFF    \
+    #           -DCLANG_ENABLE_ARCMT=OFF              \
+    #           -DCLANG_ENABLE_FORMAT=OFF             \
+    #           -DCLANG_ENABLE_BOOTSTRAP=OFF          \
+    #           -DLLVM_ENABLE_TERMINFO=OFF            \
+    #           -DCLANG_INCLUDE_TESTS=OFF             \
+    #           -DCLANG_INCLUDE_DOCS=OFF              \
+    #           -DLLVM_INCLUDE_TESTS=OFF              \
+    #           -DLLVM_INCLUDE_DOCS=OFF               \
+    #           ../llvm
+    #     cmake --build . --target clang FileCheck llvm-config --parallel ${CPU_COUNT}
+    #     cd ../../
+    #     export PATH_TO_LLVM_BUILD="$PWD/llvm-project/build"
+    #     echo "PATH_TO_LLVM_BUILD=$PATH_TO_LLVM_BUILD"
+    #     echo "PATH_TO_LLVM_BUILD=$PATH_TO_LLVM_BUILD" >> $GITHUB_ENV
+    #   shell: alpine-x86_64.sh {0}
+
+    # - name: Run script inside Alpine chroot
+    #   if: ${{ runner.os != 'Linux' }}      
+    #   run: |  
+    #     mkdir obj && cd obj
+    #     cmake -DClang_DIR="$PATH_TO_LLVM_BUILD" \
+    #       -DLLVM_DIR="$PATH_TO_LLVM_BUILD"  \
+    #       -DCMAKE_BUILD_TYPE=$([[ -z "$BUILD_TYPE" ]] && echo RelWithDebInfo || echo $BUILD_TYPE) \
+    #       -DCLAD_CODE_COVERAGE=${CLAD_CODE_COVERAGE}  \
+    #       -DLLVM_EXTERNAL_LIT="`which lit`" \
+    #       $GITHUB_WORKSPACE                 \
+    #       ${{ matrix.extra_cmake_options }}
+
+    #     cmake --build . --target check-clad -- -j4
+    #   shell: alpine-x86_64.sh {0}
+
+    - name: Setup latest Alpine Linux for x86_64
       if: ${{ runner.os == 'Linux' }}
       run: |
-        # sudo apt-get update \
-        # && apt-get -y install build-essential \
-        # && apt-get install -y wget \
-        # && rm -rf /var/lib/apt/lists/* \
-        # && wget https://github.com/Kitware/CMake/releases/download/v3.24.1/cmake-3.24.1-Linux-x86_64.sh \
-        # -q -O /tmp/cmake-install.sh \
-        # && chmod u+x /tmp/cmake-install.sh \
-        # && mkdir /opt/cmake-3.24.1 \
-        # && /tmp/cmake-install.sh --skip-license --prefix=/opt/cmake-3.24.1 \
-        # && rm /tmp/cmake-install.sh \
-        # && ln -s /opt/cmake-3.24.1/bin/* /usr/local/bin
-        # apt-get update && apt install -y curl git && apt clean
-        os="${{ matrix.os }}"
-        git clone --depth=1 -b release/${{ matrix.clang-runtime }}.x https://github.com/llvm/llvm-project.git
-        cd llvm-project
-        # Build
-        mkdir build
-        cd build
-        export CPU_COUNT="$(nproc --all)"
-        cmake \
-              -DLLVM_ENABLE_PROJECTS="clang"        \
-              -DLLVM_TARGETS_TO_BUILD="host;NVPTX"  \
-              -DCMAKE_BUILD_TYPE=`[[ -z "$BUILD_TYPE" ]] && echo RelWithDebInfo || echo $BUILD_TYPE` \
-              -DLLVM_ENABLE_ASSERTIONS=ON           \
-              -DCLANG_ENABLE_STATIC_ANALYZER=OFF    \
-              -DCLANG_ENABLE_ARCMT=OFF              \
-              -DCLANG_ENABLE_FORMAT=OFF             \
-              -DCLANG_ENABLE_BOOTSTRAP=OFF          \
-              -DLLVM_ENABLE_TERMINFO=OFF            \
-              -DCLANG_INCLUDE_TESTS=OFF             \
-              -DCLANG_INCLUDE_DOCS=OFF              \
-              -DLLVM_INCLUDE_TESTS=OFF              \
-              -DLLVM_INCLUDE_DOCS=OFF               \
-              ../llvm
-        cmake --build . --target clang FileCheck llvm-config --parallel ${CPU_COUNT}
-        cd ../../
-      shell: alpine-x86_64.sh {0}
-
-    - name: Run script inside Alpine chroot
-      if: ${{ runner.os != 'Linux' }}      
-      run: |  
-        mkdir obj && cd obj
-        cmake -DClang_DIR="$PATH_TO_LLVM_BUILD" \
-          -DLLVM_DIR="$PATH_TO_LLVM_BUILD"  \
-          -DCMAKE_BUILD_TYPE=$([[ -z "$BUILD_TYPE" ]] && echo RelWithDebInfo || echo $BUILD_TYPE) \
-          -DCLAD_CODE_COVERAGE=${CLAD_CODE_COVERAGE}  \
-          -DLLVM_EXTERNAL_LIT="`which lit`" \
-          $GITHUB_WORKSPACE                 \
-          ${{ matrix.extra_cmake_options }}
-
-        cmake --build . --target check-clad -- -j4
-      shell: alpine-x86_64.sh {0}
+        git clone https://github.com/vgvassilev/clad.git
+        cd clad
+        mkdir build && cd build
+        cmake -DLLVM_DIR="$PATH_TO_LLVM_BUILD" -DCMAKE_BUILD_TYPE=DEBUG ../
+        make -j8 clad
