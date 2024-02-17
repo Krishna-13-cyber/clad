@@ -996,3 +996,4 @@ jobs:
         mkdir build && cd build
         cmake -DLLVM_DIR="$PATH_TO_LLVM_BUILD" -DCMAKE_BUILD_TYPE=DEBUG ../
         make -j8 clad
+      shell-name: alpine-aarch64.sh
