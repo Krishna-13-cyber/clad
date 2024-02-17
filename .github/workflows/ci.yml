@@ -938,6 +938,7 @@ jobs:
     - name: Setup latest Alpine Linux for x86_64
       if: ${{ runner.os == 'Linux' }}
       run: |
+        sudo apt install -y gcc g++
         mkdir build && cd build
         cmake -DLLVM_DIR="$PATH_TO_LLVM_BUILD" -DCMAKE_BUILD_TYPE=DEBUG ../
         make -j8 clad
