@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 
 RUN apt-get update \
   && apt-get -y install build-essential \
@@ -12,15 +12,4 @@ RUN apt-get update \
       && rm /tmp/cmake-install.sh \
       && ln -s /opt/cmake-3.24.1/bin/* /usr/local/bin
 RUN uname -a
-RUN apt-get update && apt-get -y install python3
-RUN apt-get update && apt install -y wget curl git build-essential && apt clean
-RUN git clone https://github.com/llvm/llvm-project.git
-RUN cd llvm-project && git checkout release/16.x
-RUN mkdir build && cd build
-RUN cmake -DLLVM_ENABLE_PROJECTS="clang" -DCMAKE_BUILD_TYPE="DEBUG" -DLLVM_TARGETS_TO_BUILD=host ../llvm-project/llvm
-RUN cmake --build . --target clang -j 8 --parallel $(nproc --all)
-RUN cd ../..
-RUN git clone https://github.com/vgvassilev/clad.git
-RUN cd clad && mkdir build && cd build
-RUN cmake -DLLVM_DIR=../../llvm-project/build -DCMAKE_BUILD_TYPE=DEBUG ../
-RUN make -j8 clad
+RUN apt-get update && apt install -y curl llvm clang git && apt clean
