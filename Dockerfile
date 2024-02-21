@@ -13,3 +13,4 @@ RUN apt-get update \
       && ln -s /opt/cmake-3.24.1/bin/* /usr/local/bin
 RUN uname -a
 RUN apt-get update && apt install -y curl llvm clang git && apt clean
+RUN apt-get install -y llvm-dev libclang-dev
