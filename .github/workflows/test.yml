@@ -1,49 +1,45 @@
-##############################################################################
-  # alpine linux 32-bit
-  ##############################################################################
-    name: Alpine Linux, musl, 32-bit (x1.5)
-    on:
-      push:
-        branches:
-          - plat-test
-    runs-on: ubuntu-latest
+---
+name: 'build images'
 
-    env:
-      CC: "gcc"
-      FLINT_TEST_MULTIPLIER: "1.5"
+on:
+  push:
+    branches:
+      - plat-test
 
-    steps:
-      - uses: actions/checkout@v4
+jobs:
+    build_simppru_job:
+        runs-on: ubuntu-latest
+        name: This will test simppru on amd64 machine
+        steps: 
+            - name: "Setup latest Alpine Linux"
+              uses: jirutka/setup-alpine@v1
+              with:
+                arch: x86
+                branch: edge
+                packages: >
+                  llvm14-dev
+                  libclang14-dev
+                  cmake
+                  llvm-14
+                  clang-14
+                  make
+            - name: "Setup"
+              run: |
+                clang --version
+                make --version
+              shell: alpine.sh {0}
 
-      - name: "Setup latest Alpine Linux"
-        uses: jirutka/setup-alpine@v1
-        with:
-          arch: x86
-          branch: edge
-          packages: >
-            llvm14-dev
-            libclang14-dev
-            cmake
-            llvm-14
-            clang-14
-            make
-      - name: "Setup"
-        run: |
-          clang --version
-          make --version
-        shell: alpine.sh {0}
+            - name: "Compile library"
+              run: |
+                mkdir build && cd build
+              shell: alpine.sh {0}
 
-      - name: "Compile library"
-        run: |
-          mkdir build && cd build
-        shell: alpine.sh {0}
+            - name: "Compile tests"
+              run: |
+                cmake -DLLVM_DIR=/usr/lib/llvm-11/build/ -DCMAKE_BUILD_TYPE=DEBUG -DLLVM_EXTERNAL_LIT="$(which lit)" ../
+              shell: alpine.sh {0}
 
-      - name: "Compile tests"
-        run: |
-          cmake -DLLVM_DIR=/usr/lib/llvm-11/build/ -DCMAKE_BUILD_TYPE=DEBUG -DLLVM_EXTERNAL_LIT="$(which lit)" ../
-        shell: alpine.sh {0}
-
-      - name: "Check"
-        run: |
-          make -j 8 check-clad
-        shell: alpine.sh {0}
+            - name: "Check"
+              run: |
+                make -j 8 check-clad
+              shell: alpine.sh {0}
