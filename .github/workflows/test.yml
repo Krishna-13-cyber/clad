@@ -42,9 +42,5 @@ jobs:
                 cd clad
                 mkdir build && cd build
                 cmake -DLLVM_DIR=/usr/lib/ -DCMAKE_BUILD_TYPE=DEBUG -DLLVM_EXTERNAL_LIT="$(which lit)" ../
-              shell: alpine.sh {0}
-
-            - name: "Check"
-              run: |
                 make -j 8 check-clad
               shell: alpine.sh {0}
