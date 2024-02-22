@@ -17,11 +17,11 @@ jobs:
                 arch: x86
                 branch: edge
                 packages: >
-                  llvm14-dev
-                  libclang14-dev
+                  llvm-dev
+                  libclang-dev
                   cmake
-                  llvm-14
-                  clang-14
+                  llvm
+                  clang
                   make
             - name: "Setup"
               run: |
