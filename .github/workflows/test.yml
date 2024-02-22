@@ -34,6 +34,7 @@ jobs:
 
             - name: "Compile library"
               run: |
+                git clone https://github.com/vgvassilev/clad.git
                 mkdir build && cd build
               shell: alpine.sh {0}
 
