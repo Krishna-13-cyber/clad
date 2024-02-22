@@ -10,7 +10,10 @@ jobs:
     build_simppru_job:
         runs-on: ubuntu-latest
         name: This will test simppru on amd64 machine
+        
         steps: 
+            - name: Checkout branch
+              uses: actions/checkout@v3
             - name: "Setup latest Alpine Linux"
               uses: jirutka/setup-alpine@v1
               with:
@@ -22,6 +25,7 @@ jobs:
                   llvm
                   clang
                   make
+                  git
             - name: "Setup"
               run: |
                 clang --version
@@ -35,7 +39,7 @@ jobs:
 
             - name: "Compile tests"
               run: |
-                cmake -DLLVM_DIR=/usr/lib/llvm-11/build/ -DCMAKE_BUILD_TYPE=DEBUG -DLLVM_EXTERNAL_LIT="$(which lit)" ~/clad
+                cmake -DLLVM_DIR=/usr/lib/llvm-11/build/ -DCMAKE_BUILD_TYPE=DEBUG -DLLVM_EXTERNAL_LIT="$(which lit)" ../
               shell: alpine.sh {0}
 
             - name: "Check"
