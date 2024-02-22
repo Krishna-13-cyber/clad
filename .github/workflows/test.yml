@@ -4,7 +4,7 @@ name: 'Platforms'
 on:
   push:
     branches:
-      - main
+      - plat-test
 
 jobs:
     build_1:
