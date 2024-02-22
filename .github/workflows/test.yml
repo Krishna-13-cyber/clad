@@ -4,7 +4,10 @@ name: 'Platforms'
 on:
   push:
     branches:
-      - plat-test
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
     build_1:
@@ -79,7 +82,7 @@ jobs:
 
     build_3:
         runs-on: ubuntu-latest
-        name: armv7
+        name: aarch64
         steps:
             - name: Checkout branch
               uses: actions/checkout@v3
