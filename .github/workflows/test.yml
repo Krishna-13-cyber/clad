@@ -18,7 +18,6 @@ jobs:
                 branch: edge
                 packages: >
                   llvm-dev
-                  libclang-dev
                   cmake
                   llvm
                   clang
