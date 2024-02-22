@@ -1,9 +1,11 @@
 ##############################################################################
   # alpine linux 32-bit
   ##############################################################################
-  alpine-32bit:
     name: Alpine Linux, musl, 32-bit (x1.5)
-
+    on:
+      push:
+        branches:
+          - plat-test
     runs-on: ubuntu-latest
 
     env:
