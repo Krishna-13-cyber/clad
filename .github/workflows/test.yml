@@ -23,6 +23,7 @@ jobs:
                   llvm-dev
                   clang-dev
                   clang-static
+                  llvm-static
                   cmake
                   llvm
                   clang
