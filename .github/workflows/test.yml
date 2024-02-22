@@ -38,9 +38,7 @@ jobs:
 
             - name: "Compile library"
               run: |
-                git clone https://github.com/vgvassilev/clad.git
-                cd clad
                 mkdir build && cd build
-                cmake -DLLVM_DIR=/usr/lib/ -DCMAKE_BUILD_TYPE=DEBUG -DLLVM_EXTERNAL_LIT="$(which lit)" ../
+                cmake -DLLVM_DIR=/usr/lib/ -DCMAKE_BUILD_TYPE=DEBUG -DLLVM_EXTERNAL_LIT="$(which lit)" ../../clad
                 make -j 8 check-clad
               shell: alpine.sh {0}
