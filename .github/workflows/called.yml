@@ -36,6 +36,6 @@ jobs:
       - name: "Compile library"
         run: |
           mkdir build && cd build
-          cmake -DLLVM_EXTERNAL_LIT="$(which lit)" ../../clad
+          cmake -DLLVM_EXTERNAL_LIT="$(which lit)" ../clad
           make -j 8 check-clad
         shell: alpine.sh {0}
