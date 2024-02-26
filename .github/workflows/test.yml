@@ -9,108 +9,15 @@ on:
     branches:
       - plat-test
 
+  workflow_dispatch:
+
 jobs:
-    build_1:
-        runs-on: ubuntu-latest
-        name: x86
-        steps:
-            - name: Checkout branch
-              uses: actions/checkout@v3
-            - name: "Setup latest Alpine Linux"
-              uses: jirutka/setup-alpine@v1
-              with:
-                arch: x86
-                branch: edge
-                packages: >
-                  llvm-dev
-                  clang-dev
-                  clang-static
-                  llvm17-static
-                  llvm17-gtest
-                  cmake
-                  llvm
-                  clang
-                  make
-                  git
-            - name: "Setup"
-              run: |
-                clang --version
-                make --version
-              shell: alpine.sh {0}
+  build_1:
+    uses: Krishna-13-cyber/clad/.github/workflows/called.yml@plat-test
+    with:
+      username: x86
 
-            - name: "Compile library"
-              run: |
-                mkdir build && cd build
-                cmake -DLLVM_EXTERNAL_LIT="$(which lit)" ../../clad
-                make -j 8 check-clad
-              shell: alpine.sh {0}
-
-    build_2:
-        runs-on: ubuntu-latest
-        name: armv7
-        steps:
-            - name: Checkout branch
-              uses: actions/checkout@v3
-            - name: "Setup latest Alpine Linux"
-              uses: jirutka/setup-alpine@v1
-              with:
-                arch: armv7
-                branch: edge
-                packages: >
-                  llvm-dev
-                  clang-dev
-                  clang-static
-                  llvm17-static
-                  llvm17-gtest
-                  cmake
-                  llvm
-                  clang
-                  make
-                  git
-            - name: "Setup"
-              run: |
-                clang --version
-                make --version
-              shell: alpine.sh {0}
-
-            - name: "Compile library"
-              run: |
-                mkdir build && cd build
-                cmake -DLLVM_EXTERNAL_LIT="$(which lit)" ../../clad
-                make -j 8 check-clad
-              shell: alpine.sh {0}
-
-    build_3:
-        runs-on: ubuntu-latest
-        name: aarch64
-        steps:
-            - name: Checkout branch
-              uses: actions/checkout@v3
-            - name: "Setup latest Alpine Linux"
-              uses: jirutka/setup-alpine@v1
-              with:
-                arch: aarch64
-                branch: edge
-                packages: >
-                  llvm-dev
-                  clang-dev
-                  clang-static
-                  llvm17-static
-                  llvm17-gtest
-                  cmake
-                  llvm
-                  clang
-                  make
-                  git
-            - name: "Setup"
-              run: |
-                clang --version
-                make --version
-              shell: alpine.sh {0}
-
-            - name: "Compile library"
-              run: |
-                mkdir build && cd build
-                cmake -DLLVM_EXTERNAL_LIT="$(which lit)" ../../clad
-                make -j 8 check-clad
-              shell: alpine.sh {0}
+  build_2:
+    uses: Krishna-13-cyber/clad/.github/workflows/called.yml@plat-test
+    with:
+      username: armv7

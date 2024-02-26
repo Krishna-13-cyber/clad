@@ -1,0 +1,41 @@
+name: 'Archs'
+
+on:
+  workflow_call:
+    inputs:
+      username:
+        required: true
+        type: string
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Setup latest Alpine Linux"
+        uses: jirutka/setup-alpine@v1
+        with:
+          arch: ${{ inputs.username }}
+          branch: edge
+          packages: >
+            llvm-dev
+            clang-dev
+            clang-static
+            llvm17-static
+            llvm17-gtest
+            cmake
+            llvm
+            clang
+            make
+            git
+      - name: "Setup"
+        run: |
+          clang --version
+          make --version
+        shell: alpine.sh {0}
+
+      - name: "Compile library"
+        run: |
+          mkdir build && cd build
+          cmake -DLLVM_EXTERNAL_LIT="$(which lit)" ../../clad
+          make -j 8 check-clad
+        shell: alpine.sh {0}
