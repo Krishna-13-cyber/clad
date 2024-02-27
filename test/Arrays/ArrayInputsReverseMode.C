@@ -3,7 +3,8 @@
 // RUN: %cladclang -Xclang -plugin-arg-clad -Xclang -enable-tbr %s -I%S/../../include -Wno-unused-value -oArrayInputsReverseMode.out
 // RUN: ./ArrayInputsReverseMode.out | FileCheck -check-prefix=CHECK-EXEC %s
 
-//XFAIL:*
+//CHECK-NOT: {{.*error|warning|note:.*}}
+//XFAIL: target={{(i686|i386).*}}
 
 #include "clad/Differentiator/Differentiator.h"
 
