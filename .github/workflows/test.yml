@@ -30,7 +30,7 @@ jobs:
   example_job:
     strategy:
       matrix:
-        target: x86
+        target: [x86]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
