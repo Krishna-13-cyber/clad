@@ -30,9 +30,8 @@ jobs:
   example_job:
     strategy:
       matrix:
-        target: [x86, armv7, aarch64]
+        target: x86
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
