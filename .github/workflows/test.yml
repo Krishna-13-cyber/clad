@@ -50,6 +50,7 @@ jobs:
             llvm
             clang
             make
+            git
       - name: "Setup"
         run: |
           clang --version
